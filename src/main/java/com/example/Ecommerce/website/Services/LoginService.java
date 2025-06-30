@@ -2,6 +2,7 @@ package com.example.Ecommerce.website.Services;
 
 import com.example.Ecommerce.website.Dto.LoginDto;
 import com.example.Ecommerce.website.Entity.User;
+import com.example.Ecommerce.website.Exceptions.InvalidLoginCred;
 import com.example.Ecommerce.website.Repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +26,8 @@ public class LoginService {
                     authmanager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword()));
           //  System.out.println("this is authentication"+authentication);
         } catch (Exception e) {
-            throw new RuntimeException("Invalid cred");
+           throw new InvalidLoginCred();
+          //  throw new RuntimeException("Invalid cred");
         }
         if(authentication.isAuthenticated()){
             String token = jwtService.generateToken(user.getUsername());
