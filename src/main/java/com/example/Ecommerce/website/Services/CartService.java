@@ -58,18 +58,41 @@ public class CartService {
 //        }
 //        cartRepo.deleteById(cartId);
 //    }
-//    public Cart updateCartQuantity(Long cartId, int quantity) {
-//        Cart cart = cartRepo.findById(cartId)
-//                .orElseThrow(() -> new RuntimeException("Cart item not found"));
-//
-//        cart.setQuantity(quantity);
-//        return cartRepo.save(cart);
-//    }
+public Cart updateCartQuantity(Long userId, Long productId, int quantity) {
+    Cart cart = cartRepo.findByUserIdAndProductId(userId, productId);
+    if (cart == null) {
+        throw new RuntimeException("Cart item not found for update.");
+    }
 
-   @Transactional
-    public String checkout(long id){
+    if (quantity == 0) {
+        cartRepo.delete(cart);
+        return null;
+    }
+
+    Product product = productRepo.findById(productId)
+            .orElseThrow(() -> new RuntimeException("Product not found"));
+
+    if (quantity > product.getQuantity()) {
+        throw new RuntimeException("Requested quantity exceeds available stock");
+    }
+
+    cart.setQuantity(quantity);
+    return cartRepo.save(cart);
+}
+
+
+    @Transactional
+    public String checkout(long userId){
         try {
-            cartRepo.deleteByUserId(id);
+            List<Cart> cartItems = cartRepo.findByUserId(userId);
+            for(Cart cart: cartItems){
+                Product product = cart.getProduct();
+                int purchasedQty = cart.getQuantity();
+                int updatedQty = product.getQuantity() - purchasedQty;
+                product.setQuantity(updatedQty);
+                productRepo.save(product);
+            }
+            cartRepo.deleteByUserId(userId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -61,14 +61,16 @@ public class CustomerController {
     public ResponseEntity<List<CartDto>> viewCart(@RequestParam Long userId) {
         return ResponseEntity.ok(cartService.getUserCart(userId));
     }
-//    @PutMapping("/cart")
-//    public ResponseEntity<Cart> updateCartItem(
-//            @RequestParam Long cartId,
-//            @RequestParam int quantity) {
-//
-//        Cart updatedCart = cartService.updateCartQuantity(cartId, quantity);
-//        return ResponseEntity.ok(updatedCart);
-//    }
+    @PutMapping("/cart")
+    public ResponseEntity<Cart> updateCartQuantity(
+            @RequestParam Long userId,
+            @RequestParam Long productId,
+            @RequestParam int quantity) {
+
+        Cart updatedCart = cartService.updateCartQuantity(userId, productId, quantity);
+        return ResponseEntity.ok(updatedCart);
+    }
+
 //    @DeleteMapping("/cart")
 //    public ResponseEntity<String> deleteCartItem(@RequestParam Long cartId) {
 //        cartService.deleteCartItem(cartId);

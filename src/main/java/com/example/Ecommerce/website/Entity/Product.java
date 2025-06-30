@@ -16,6 +16,7 @@ public class Product {
     private String name;
     private Double price;
     private String description;
+    private int quantity;
     @ManyToOne
     @JoinColumn(name = "partner_id")
     @JsonIgnore
