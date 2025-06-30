@@ -7,22 +7,17 @@ import com.example.Ecommerce.website.Entity.User;
 import com.example.Ecommerce.website.Repository.PartnerRepo;
 import com.example.Ecommerce.website.Repository.ProductRepo;
 import com.example.Ecommerce.website.Repository.UserRepo;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
 public class ProductService {
     @Autowired  private ProductRepo productRepo;
     @Autowired  private ModelMapper modelMapper;
